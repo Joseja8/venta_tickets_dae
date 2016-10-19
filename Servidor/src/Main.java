@@ -1,5 +1,4 @@
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class Main {
@@ -7,8 +6,7 @@ public class Main {
         ApplicationContext context =
                 new FileSystemXmlApplicationContext("Servidor/applicationContext.xml");
 
-        Test obj = (Test) context.getBean("test");
 
-        obj.getMessage();
+        Area area = (Area) context.getBean("area");
     }
 }
