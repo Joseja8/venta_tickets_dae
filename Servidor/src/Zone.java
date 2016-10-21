@@ -4,8 +4,9 @@
 public class Zone {
 
     private Utils.Zones id;
+    private Event event;
     private int seats;
-    float price;
+    private float price;
 
     public Zone(Utils.Zones zone) {
         this.id = zone;
@@ -27,8 +28,15 @@ public class Zone {
         this.seats = seats;
     }
 
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
     public float getPrice() {
-        // TODO: implementar busqueda en tabla.
         return price;
     }
 

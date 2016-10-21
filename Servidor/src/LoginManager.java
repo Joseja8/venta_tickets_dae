@@ -5,4 +5,5 @@ public interface LoginManager {
 
     void saveUser(String username, String password);
     String getToken(String username, String password);
+    User getUser(String token);
 }

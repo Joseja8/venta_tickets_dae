@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by joseja on 10/19/16.
@@ -7,7 +7,12 @@ public class User {
 
     private String username;
     private String password;
-    private List<Ticket> tickets;
+    private ArrayList<Ticket> tickets;
+
+    User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;
@@ -25,11 +30,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Ticket> getTicket() {
+    public ArrayList<Ticket> getTickets() {
         return tickets;
     }
 
     public void addTicket(Ticket ticket) {
-        this.tickets.add(ticket);
+        tickets.add(ticket);
     }
 }

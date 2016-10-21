@@ -2,26 +2,16 @@
  * Created by joseja on 10/19/16.
  */
 public class Ticket {
-    private User user;
-    private Event event;
-    private Zone zone;
+
     private int id;
-    private int price;
+    private float price;
+    private Event event;
+    private Utils.Zones zone;
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Zone getZone() {
-        return zone;
-    }
-
-    public void setZone(Zone zone) {
+    public Ticket(Event event, Utils.Zones zone) {
+        this.event = event;
         this.zone = zone;
+        this.price = PriceTable.getPrice(event, zone);
     }
 
     public int getId() {
@@ -30,21 +20,5 @@ public class Ticket {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
     }
 }
