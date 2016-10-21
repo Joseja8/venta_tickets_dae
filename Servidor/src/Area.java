@@ -6,6 +6,7 @@ import java.util.List;
 public class Area {
 
     private String address;
+    private String city;
     private List<Zone> zones;
 
     public void addZone(Utils.Zones zone) {
@@ -26,5 +27,13 @@ public class Area {
 
     public void setZones(List<Zone> zones) {
         this.zones = zones;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

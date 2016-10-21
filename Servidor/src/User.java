@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * Created by joseja on 10/19/16.
  */
@@ -5,7 +7,7 @@ public class User {
 
     private String username;
     private String password;
-    private Ticket ticket;
+    private List<Ticket> tickets;
 
     public String getUsername() {
         return username;
@@ -23,11 +25,11 @@ public class User {
         this.password = password;
     }
 
-    public Ticket getTicket() {
-        return ticket;
+    public List<Ticket> getTicket() {
+        return tickets;
     }
 
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
+    public void addTicket(Ticket ticket) {
+        this.tickets.add(ticket);
     }
 }
