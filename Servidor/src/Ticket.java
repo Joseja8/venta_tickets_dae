@@ -3,7 +3,7 @@
  */
 public class Ticket {
     private User user;
-    // TODO: Event.
+    private Event event;
     private Zone zone;
     private int id;
     private int price;
@@ -38,5 +38,13 @@ public class Ticket {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }
