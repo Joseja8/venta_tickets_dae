@@ -1,31 +1,34 @@
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by joseja on 10/19/16.
  */
 public class Area {
 
-    private String address;
     private String city;
-    private List<Zone> zones;
+    private ArrayList<Zone> zones;
 
-    public void addZone(Utils.Zones zone) {
-        getZones().add(new Zone(zone));
+    public Area() {}
+
+    public Area(String city, ArrayList<Zone> zones) {
+        this.city = city;
+        this.zones = zones;
     }
 
-    public String getAddress() {
-        return address;
+    public Area(String city) {
+        this.city = city;
+        this.zones = new ArrayList<>();
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void addZone(Zone zone) {
+        getZones().add(zone);
     }
 
-    public List<Zone> getZones() {
+    public ArrayList<Zone> getZones() {
         return zones;
     }
 
-    public void setZones(List<Zone> zones) {
+    public void setZones(ArrayList<Zone> zones) {
         this.zones = zones;
     }
 

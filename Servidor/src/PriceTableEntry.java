@@ -3,15 +3,17 @@
  */
 public class PriceTableEntry {
 
-    private Zone zone;
+    private Event event;
+    private Utils.Zones zoneID;
+    private float price;
     private int boughtSeats;
 
     public float getPrice() {
-        return zone.getPrice();
+        return price;
     }
 
     public void setPrice(float price) {
-        this.zone.setPrice(price);
+        this.price = price;
     }
 
     public int getBoughtSeats() {
@@ -23,18 +25,18 @@ public class PriceTableEntry {
     }
 
     public Event getEvent() {
-        return zone.getEvent();
+        return this.event;
     }
 
     public void setEvent(Event event) {
-        this.zone.setEvent(event);
+        this.event = event;
     }
 
-    public Zone getZone() {
-        return zone;
+    public Utils.Zones getZone() {
+        return zoneID;
     }
 
-    public void setZone(Zone zone) {
-        this.zone = zone;
+    public void setZone(Utils.Zones zoneID) {
+        this.zoneID = zoneID;
     }
 }

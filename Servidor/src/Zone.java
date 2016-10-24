@@ -4,12 +4,12 @@
 public class Zone {
 
     private Utils.Zones id;
-    private Event event;
     private int seats;
     private float price;
 
-    public Zone(Utils.Zones zone) {
+    public Zone(Utils.Zones zone, int seats) {
         this.id = zone;
+        this.seats = seats;
     }
 
     public Utils.Zones getId() {
@@ -26,21 +26,5 @@ public class Zone {
 
     public void setSeats(int seats) {
         this.seats = seats;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
     }
 }

@@ -1,4 +1,4 @@
-import java.util.Date;
+import org.joda.time.LocalDate;
 
 /**
  * Created by joseja on 10/19/16.
@@ -6,10 +6,18 @@ import java.util.Date;
 public class Event {
 
     private String name;
-    private Utils.EventType eventType;
-    private Date startDate;
-    private Date finishDate;
+    private Utils.EventTypes eventTypes;
+    private LocalDate startDate;
+    private LocalDate finishDate;
     private Area area;
+
+    public Event(String name, Utils.EventTypes eventTypes, LocalDate start, LocalDate finish, Area area) {
+        this.name = name;
+        this.eventTypes = eventTypes;
+        this.startDate = start;
+        this.finishDate = finish;
+        this.area = area;
+    }
 
     public String getName() {
         return name;
@@ -19,27 +27,27 @@ public class Event {
         this.name = name;
     }
 
-    public Utils.EventType getEventType() {
-        return eventType;
+    public Utils.EventTypes getEventTypes() {
+        return eventTypes;
     }
 
-    public void setEventType(Utils.EventType eventType) {
-        this.eventType = eventType;
+    public void setEventTypes(Utils.EventTypes eventTypes) {
+        this.eventTypes = eventTypes;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getFinishDate() {
+    public LocalDate getFinishDate() {
         return finishDate;
     }
 
-    public void setFinishDate(Date finishDate) {
+    public void setFinishDate(LocalDate finishDate) {
         this.finishDate = finishDate;
     }
 
