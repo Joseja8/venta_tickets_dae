@@ -5,6 +5,6 @@ import java.util.ArrayList;
  */
 public interface TicketManager {
 
-    ArrayList<Ticket> getTickets(User user);
-    void addTicket(User user, Event event, Utils.Zones zone);
+    ArrayList<Ticket> getTickets(User user, String token);
+    void buyTicket(User user, Event event, Zone zone, String token);
 }

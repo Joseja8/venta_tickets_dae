@@ -5,9 +5,12 @@ import java.util.ArrayList;
  */
 public class PriceTable {
 
-    static ArrayList<PriceTableEntry> priceTable;
+    static ArrayList<PriceTableEntry> priceTable = new ArrayList<>();
 
-    public static float getPrice(Event event, Utils.Zones zone) {
+    public PriceTable() {
+    }
+
+    public static float getPrice(Event event, Zone zone) {
         for (PriceTableEntry entry : priceTable) {
             if (entry.getEvent().equals(event) && entry.getZone().equals(zone))
                 return entry.getPrice();
@@ -15,18 +18,22 @@ public class PriceTable {
         return -1;
     }
 
-    public static void setPrice(Event event, Utils.Zones zone, float newPrice) {
-        for (PriceTableEntry entry : priceTable) {
-            if (entry.getEvent().equals(event) && entry.getZone().equals(zone))
-                entry.setPrice(newPrice);
+    public static void setPrice(Event event, Zone zone, float newPrice) {
+        if (zoneExists(event, zone)) {
+            for (PriceTableEntry entry : priceTable) {
+                if (entry.getEvent().equals(event) && entry.getZone().equals(zone))
+                    entry.setPrice(newPrice);
+            }
+        } else {
+            priceTable.add(new PriceTableEntry(event, zone.getId(), newPrice));
         }
     }
 
-    public static int getBoughtSeats(Event event, Utils.Zones zone) {
+    private static boolean zoneExists(Event event, Zone zone) {
         for (PriceTableEntry entry : priceTable) {
             if (entry.getEvent().equals(event) && entry.getZone().equals(zone))
-                return entry.getBoughtSeats();
+                return true;
         }
-        return -1;
+        return false;
     }
 }

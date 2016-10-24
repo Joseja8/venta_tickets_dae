@@ -6,7 +6,12 @@ public class PriceTableEntry {
     private Event event;
     private Utils.Zones zoneID;
     private float price;
-    private int boughtSeats;
+
+    public PriceTableEntry(Event event, Utils.Zones zoneID, float price) {
+        this.event = event;
+        this.zoneID = zoneID;
+        this.price = price;
+    }
 
     public float getPrice() {
         return price;
@@ -14,14 +19,6 @@ public class PriceTableEntry {
 
     public void setPrice(float price) {
         this.price = price;
-    }
-
-    public int getBoughtSeats() {
-        return boughtSeats;
-    }
-
-    public void setBoughtSeats(int boughtSeats) {
-        this.boughtSeats = boughtSeats;
     }
 
     public Event getEvent() {

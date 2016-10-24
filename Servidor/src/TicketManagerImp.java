@@ -5,12 +5,20 @@ import java.util.ArrayList;
  */
 public class TicketManagerImp implements TicketManager {
     @Override
-    public ArrayList<Ticket> getTickets(User user) {
-        return user.getTickets();
+    public ArrayList<Ticket> getTickets(User user, String token) {
+        if (UserManagerImp.getUser(token).equals(user)) {
+            return user.getTickets();
+        } else {
+            throw new IllegalStateException("Invalid token");
+        }
     }
 
     @Override
-    public void addTicket(User user, Event event, Utils.Zones zone) {
-        user.addTicket(new Ticket(event, zone));
+    public void buyTicket(User user, Event event, Zone zone, String token) {
+        if (UserManagerImp.getUser(token).equals(user)) {
+            user.addTicket(new Ticket(event, zone));
+        } else {
+            throw new IllegalStateException("Invalid token");
+        }
     }
 }
