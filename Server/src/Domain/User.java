@@ -1,4 +1,7 @@
+package Domain;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -10,7 +13,13 @@ public class User {
     private String password;
     private ArrayList<Ticket> tickets;
 
-    User(String username, String password) {
+    public User() {
+        this.username = "jose";
+        this.password = "jose";
+        this.tickets = new ArrayList<>(Arrays.asList(new Ticket(), new Ticket(), new Ticket()));
+    }
+
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }

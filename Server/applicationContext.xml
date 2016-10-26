@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="area" class="Domain.Area"></bean>
+    <bean id="user" class="Domain.User"></bean>
+    <bean id="event" class="Domain.Event"></bean>
+    <bean id="ticket" class="Domain.Ticket">
+    </bean>
+    <bean id="zone" class="Domain.Zone"></bean>
+    <bean id="priceTable" class="Domain.PriceTable"></bean>
+    <bean id="priceTableEntry" class="Domain.PriceTableEntry"></bean>
+    <bean id="eventManagerImp" class="Interfaces.Implementations.EventManagerImp">
+        <property name="userManager" ref="userManagerImp"/>
+        <property name="priceTable" ref="priceTable"/>
+    </bean>
+    <bean id="ticketManagerImp" class="Interfaces.Implementations.TicketManagerImp">
+        <property name="userManager" ref="userManagerImp"/>
+    </bean>
+    <bean id="userManagerImp" class="Interfaces.Implementations.UserManagerImp"></bean>
+</beans>

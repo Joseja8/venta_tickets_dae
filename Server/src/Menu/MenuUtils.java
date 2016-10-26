@@ -1,3 +1,5 @@
+package Menu;
+
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +25,14 @@ public class MenuUtils {
     public static long getLongInput() {
         Scanner reader = new Scanner(System.in);
         if (reader.hasNextLong()) {
+            return reader.nextLong();
+        }
+        return -1;
+    }
+
+    public static long getFloatInput() {
+        Scanner reader = new Scanner(System.in);
+        if (reader.hasNextFloat()) {
             return reader.nextLong();
         }
         return -1;

@@ -1,13 +1,23 @@
+package Domain;
+
+import Interfaces.EventManager;
+
 /**
  * Created by joseja on 10/21/16.
  */
 public class PriceTableEntry {
 
     private Event event;
-    private Utils.Zones zoneID;
+    private EventManager.Zones zoneID;
     private float price;
 
-    public PriceTableEntry(Event event, Utils.Zones zoneID, float price) {
+    public PriceTableEntry() {
+        this.event = new Event();
+        this.zoneID = EventManager.Zones.A;
+        this.price = 50;
+    }
+
+    public PriceTableEntry(Event event, EventManager.Zones zoneID, float price) {
         this.event = event;
         this.zoneID = zoneID;
         this.price = price;
@@ -29,11 +39,11 @@ public class PriceTableEntry {
         this.event = event;
     }
 
-    public Utils.Zones getZone() {
+    public EventManager.Zones getZone() {
         return zoneID;
     }
 
-    public void setZone(Utils.Zones zoneID) {
+    public void setZone(EventManager.Zones zoneID) {
         this.zoneID = zoneID;
     }
 }
