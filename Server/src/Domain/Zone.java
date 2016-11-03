@@ -8,6 +8,8 @@ import Interfaces.Implementations.EventManagerImp;
  */
 public class Zone {
 
+    private PriceTable priceTable;
+
     private EventManagerImp.Zones id;
     private int seats;
     private int remainingSeats;
@@ -78,5 +80,13 @@ public class Zone {
             return true;
         }
         return false;
+    }
+
+    public PriceTable getPriceTable() {
+        return priceTable;
+    }
+
+    public void setPriceTable(PriceTable priceTable) {
+        this.priceTable = priceTable;
     }
 }

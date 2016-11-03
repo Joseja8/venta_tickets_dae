@@ -14,7 +14,7 @@ public class PriceTableEntry {
     public PriceTableEntry() {
         this.event = new Event();
         this.zoneID = EventManager.Zones.A;
-        this.price = 50;
+        this.price = 0;
     }
 
     public PriceTableEntry(Event event, EventManager.Zones zoneID, float price) {

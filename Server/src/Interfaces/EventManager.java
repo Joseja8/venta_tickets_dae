@@ -12,21 +12,25 @@ import java.util.ArrayList;
  */
 public interface EventManager {
 
-    enum Zones {
-        A, B, C, D, E
-    }
+    enum Zones { A, B, C, D, E }
 
-    enum EventTypes {
-        Music, Theatre, Festival, Sport
-    }
+    enum EventTypes { Music, Theatre, Festival, Sport }
 
+    Event getEvent(String name, LocalDate date, String city);
     ArrayList<Event> getEvents(String name);
     ArrayList<Event> getEvents(String name, String city);
     ArrayList<Event> getEvents(LocalDate date, EventTypes type);
     ArrayList<Event> getEvents(LocalDate date, EventTypes type, String city);
-    Event getEvent(String name, LocalDate date, String city);
+
     boolean setPrice(Event event, Zone zone, float price, String token);
+
+    boolean createEvent(String name, EventTypes type, LocalDate startDate, LocalDate finishDate, Area area, String token);
+    boolean createArea(String city, ArrayList<Zone> zones, String token);
+    boolean createZone(Zones zone, int seats, String token);
+
     ArrayList<Area> getAreas();
+    Area getArea(String city);
+    Area getArea(int index);
     Zones[] getZones();
     EventTypes[] getEventTypes();
 }

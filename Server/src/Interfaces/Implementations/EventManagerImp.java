@@ -23,8 +23,20 @@ public class EventManagerImp implements EventManager {
     private ArrayList<Area> areas;
 
     public EventManagerImp() {
-        this.events = new ArrayList<>(Arrays.asList(new Event(), new Event(), new Event()));
-        this.areas = new ArrayList<>(Arrays.asList(new Area(), new Area(), new Area()));
+        this.events = new ArrayList<>(Arrays.asList(new Event()));
+
+        Zone zone1 = new Zone(Zones.A, 100);
+        Zone zone2 = new Zone(Zones.B, 200);
+        Zone zone3 = new Zone(Zones.C, 300);
+        Zone zone4 = new Zone(Zones.D, 400);
+        Zone zone5 = new Zone(Zones.E, 500);
+
+        Area area1 = new Area("madrid", new ArrayList<>(Arrays.asList(zone1, zone2)));
+        Area area2 = new Area("barcelona", new ArrayList<>(Arrays.asList(zone1, zone2, zone3)));
+        Area area3 = new Area("malaga", new ArrayList<>(Arrays.asList(zone1, zone4)));
+        Area area4 = new Area("sevilla", new ArrayList<>(Arrays.asList(zone2)));
+
+        this.areas = new ArrayList<>(Arrays.asList(area1, area2, area3, area4));
     }
 
     @Override
@@ -89,8 +101,58 @@ public class EventManagerImp implements EventManager {
     }
 
     @Override
+    public boolean createEvent(String name, EventTypes type, LocalDate startDate, LocalDate finishDate, Area area, String token) {
+        Event newEvent = new Event(name, type, startDate, finishDate, area);
+        if (userManager.isAdmin(token)) {
+            events.add(newEvent);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean createArea(String city, ArrayList<Zone> zones, String token) {
+        if (userManager.isAdmin(token)) {
+            Area newArea = new Area(city, zones);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean createZone(Zones zone, int seats, String token) {
+        if (userManager.isAdmin(token)) {
+            Zone newZone = new Zone(zone, seats);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public ArrayList<Area> getAreas() {
         return areas;
+    }
+
+    @Override
+    public Area getArea(String city) {
+        for (Area area : areas) {
+            if (area.getCity().equals(area)) {
+                return area;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Area getArea(int index) {
+        if (index >= 0 && index < areas.size()) {
+            return areas.get(index);
+        } else {
+            return null;
+        }
     }
 
     @Override

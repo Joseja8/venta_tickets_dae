@@ -1,8 +1,8 @@
-package Menu;
+package TestClient;
 
 import Interfaces.EventManager;
 import org.joda.time.LocalDate;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 
 import java.util.Scanner;
 
@@ -11,13 +11,13 @@ import java.util.Scanner;
  */
 public class Menu {
 
-    ApplicationContext context;
+    AbstractApplicationContext context;
 
     Interfaces.UserManager userManager;
     Interfaces.EventManager eventManager;
     Interfaces.TicketManager ticketMaganer;
 
-    public Menu(ApplicationContext context) {
+    public Menu(AbstractApplicationContext context) {
         this.context = context;
 
         this.userManager = (Interfaces.UserManager) context.getBean("userManagerImp");
@@ -350,7 +350,7 @@ public class Menu {
 
             switch (option) {
                 case 1:
-                    addEvent();
+                    addEvent(token);
                     break;
                 case 2:
                     setTicketPrice(token);
@@ -425,8 +425,63 @@ public class Menu {
         }
     }
 
-    private void addEvent() {
+    private void addEvent(String token) {
+        System.out.println("CREATE EVENT");
 
+        System.out.print("\n");
+        System.out.print("Enter the name of the event: (-1 to cancel): ");
+        String eventName = new Scanner(System.in).next();
+
+        System.out.print("\n");
+        System.out.print("Enter the start date of the event: (-1 to cancel): ");
+        LocalDate eventStartDate = LocalDate.parse(new Scanner(System.in).next());
+
+        System.out.print("\n");
+        System.out.print("Enter the finish date of the event: (-1 to cancel): ");
+        LocalDate eventFinishDate = LocalDate.parse(new Scanner(System.in).next());
+
+        System.out.print("\n");
+        System.out.print("Enter the type of the event: (-1 to cancel): ");
+        EventManager.EventTypes eventType = selectEventType();
+
+        System.out.print("\n");
+        System.out.print("Enter the city of the event: (-1 to cancel): ");
+        String eventCity = new Scanner(System.in).next();
+
+        System.out.print("\n");
+        System.out.print("Enter the Area of the event: (-1 to cancel): ");
+        String eventArea = selectArea();
+
+        MenuUtils.cleanConsole();
+
+        if (eventType != null && eventName != null) {
+            System.out.println(eventManager.createEvent(eventName, eventType, eventStartDate,
+                    eventFinishDate, eventManager.getArea(eventCity), token));
+            MenuUtils.waitSeconds(5);
+        } else {
+            System.out.println("Wrong data");
+            MenuUtils.waitSeconds(2);
+        }
+
+        MenuUtils.cleanConsole();
+    }
+
+    private String selectArea() {
+        System.out.println("EVENT AREA SELECTION");
+
+        for (int i = 0; i <= eventManager.getAreas().size(); ++i) {
+            System.out.println("Area:  " + eventManager.getArea(i));
+        }
+        System.out.print("\n");
+        System.out.print("Enter the area: ");
+        String area = new Scanner(System.in).next();
+
+        if (area != null) {
+            return area;
+        } else {
+            System.out.println("Area not found");
+            return null;
+        }
     }
 
 }

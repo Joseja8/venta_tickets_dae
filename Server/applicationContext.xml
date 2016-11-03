@@ -4,14 +4,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
  http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="area" class="Domain.Area"></bean>
-    <bean id="user" class="Domain.User"></bean>
-    <bean id="event" class="Domain.Event"></bean>
     <bean id="ticket" class="Domain.Ticket">
+        <property name="priceTable" ref="priceTable"/>
     </bean>
-    <bean id="zone" class="Domain.Zone"></bean>
+    <bean id="zone" class="Domain.Zone">
+        <property name="priceTable" ref="priceTable"/></bean>
     <bean id="priceTable" class="Domain.PriceTable"></bean>
-    <bean id="priceTableEntry" class="Domain.PriceTableEntry"></bean>
     <bean id="eventManagerImp" class="Interfaces.Implementations.EventManagerImp">
         <property name="userManager" ref="userManagerImp"/>
         <property name="priceTable" ref="priceTable"/>
@@ -20,4 +18,9 @@
         <property name="userManager" ref="userManagerImp"/>
     </bean>
     <bean id="userManagerImp" class="Interfaces.Implementations.UserManagerImp"></bean>
+    <bean id="DBConnection" class="Domain.DBConnection" destroy-method="disconnect">
+        <constructor-arg value="jdbc:mysql://localhost:3306/test" index="0"/>
+        <constructor-arg value="root" index="1"/>
+        <constructor-arg value="root" index="2"/>
+    </bean>
 </beans>
