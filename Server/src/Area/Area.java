@@ -21,7 +21,6 @@ public class Area {
 
     public Area() {
         this.setName("alicante");
-        this.setZones(new ArrayList<>(Arrays.asList(new Zone(), new Zone(), new Zone())));
     }
 
     public Area(String name, ArrayList<Zone> zones) {

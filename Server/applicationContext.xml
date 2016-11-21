@@ -19,9 +19,5 @@
     </bean>
     <bean id="userManagerImp" class="User.UserManagerImp"></bean>
     <bean id="priceTableImp" class="PriceTable.PriceTableImp"></bean>
-    <bean id="DBConnection" class="Database.DBConnection" destroy-method="disconnect">
-        <!--<constructor-arg value="jdbc:mysql://localhost:3306/test" index="0"/>
-        <constructor-arg value="root" index="1"/>
-        <constructor-arg value="root" index="2"/>-->
-    </bean>
+    <bean id="DBConnection" class="Database.DBConnection" destroy-method="disconnect"></bean>
 </beans>
