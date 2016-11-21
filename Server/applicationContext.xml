@@ -4,23 +4,24 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
  http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="ticket" class="Domain.Ticket">
-        <property name="priceTable" ref="priceTable"/>
+    <bean id="ticket" class="Ticket.Ticket">
+        <property name="priceTable" ref="priceTableImp"/>
     </bean>
-    <bean id="zone" class="Domain.Zone">
-        <property name="priceTable" ref="priceTable"/></bean>
-    <bean id="priceTable" class="Domain.PriceTable"></bean>
-    <bean id="eventManagerImp" class="Interfaces.Implementations.EventManagerImp">
+    <bean id="zone" class="Zone.Zone"></bean>
+
+    <bean id="priceTable" class="PriceTable.PriceTableImp"></bean>
+    <bean id="eventManagerImp" class="Event.EventManagerImp">
         <property name="userManager" ref="userManagerImp"/>
         <property name="priceTable" ref="priceTable"/>
     </bean>
-    <bean id="ticketManagerImp" class="Interfaces.Implementations.TicketManagerImp">
+    <bean id="ticketManagerImp" class="Ticket.TicketManagerImp">
         <property name="userManager" ref="userManagerImp"/>
     </bean>
-    <bean id="userManagerImp" class="Interfaces.Implementations.UserManagerImp"></bean>
-    <bean id="DBConnection" class="Domain.DBConnection" destroy-method="disconnect">
-        <constructor-arg value="jdbc:mysql://localhost:3306/test" index="0"/>
+    <bean id="userManagerImp" class="User.UserManagerImp"></bean>
+    <bean id="priceTableImp" class="PriceTable.PriceTableImp"></bean>
+    <bean id="DBConnection" class="Database.DBConnection" destroy-method="disconnect">
+        <!--<constructor-arg value="jdbc:mysql://localhost:3306/test" index="0"/>
         <constructor-arg value="root" index="1"/>
-        <constructor-arg value="root" index="2"/>
+        <constructor-arg value="root" index="2"/>-->
     </bean>
 </beans>

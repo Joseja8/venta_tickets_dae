@@ -45,4 +45,20 @@ public class MenuUtils {
             e.printStackTrace();
         }
     }
+
+    public static boolean showError(String error, int duration) {
+        MenuUtils.cleanConsole();
+        System.out.println(error);
+        MenuUtils.waitSeconds(duration);
+        MenuUtils.cleanConsole();
+        return false;
+    }
+
+    public static boolean showConfirmation(String msg, int duration) {
+        MenuUtils.cleanConsole();
+        System.out.println(msg);
+        MenuUtils.waitSeconds(duration);
+        MenuUtils.cleanConsole();
+        return true;
+    }
 }

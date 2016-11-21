@@ -1,6 +1,11 @@
 package TestClient;
 
-import Interfaces.EventManager;
+import Event.EventManager;
+import Event.Event;
+import Zone.Zone;
+import Area.Area;
+import Ticket.TicketManager;
+import User.UserManager;
 import org.joda.time.LocalDate;
 import org.springframework.context.support.AbstractApplicationContext;
 
@@ -13,16 +18,16 @@ public class Menu {
 
     AbstractApplicationContext context;
 
-    Interfaces.UserManager userManager;
-    Interfaces.EventManager eventManager;
-    Interfaces.TicketManager ticketMaganer;
+    UserManager userManager;
+    EventManager eventManager;
+    TicketManager ticketMaganer;
 
     public Menu(AbstractApplicationContext context) {
         this.context = context;
 
-        this.userManager = (Interfaces.UserManager) context.getBean("userManagerImp");
-        this.eventManager = (Interfaces.EventManager) context.getBean("eventManagerImp");
-        this.ticketMaganer = (Interfaces.TicketManager) context.getBean("ticketManagerImp");
+        this.userManager = (UserManager) context.getBean("userManagerImp");
+        this.eventManager = (EventManager) context.getBean("eventManagerImp");
+        this.ticketMaganer = (TicketManager) context.getBean("ticketManagerImp");
 
         userManager.saveUser("admin", "admin");
     }
@@ -70,17 +75,14 @@ public class Menu {
         MenuUtils.cleanConsole();
 
         if (token != null) {
-            if(userManager.isAdmin(token)) {
+            if (userManager.isAdmin(token)) {
                 adminMenu(token);
-            } else {
+            } else if (userManager.isUser(token)) {
                 userMenu(token);
             }
-        } else {
-            System.out.print("Wrong username/password");
-            MenuUtils.waitSeconds(2);
         }
 
-        MenuUtils.cleanConsole();
+        MenuUtils.showError("Wrong username/password", 2);
     }
 
     private void signUp() {
@@ -96,11 +98,7 @@ public class Menu {
 
         userManager.saveUser(username, password);
 
-        MenuUtils.cleanConsole();
-
-        System.out.print("User saved");
-        MenuUtils.waitSeconds(2);
-
+        MenuUtils.showConfirmation("User saved", 2);
     }
 
     void userMenu(String token) {
@@ -236,8 +234,7 @@ public class Menu {
             System.out.println(eventManager.getEvents(eventDate, eventType));
             MenuUtils.waitSeconds(5);
         } else {
-            System.out.println("You must select an event type.");
-            MenuUtils.waitSeconds(2);
+            MenuUtils.showError("You must select an event type.", 2);
         }
 
         MenuUtils.cleanConsole();
@@ -292,15 +289,13 @@ public class Menu {
         System.out.print("Enter the city of the event: ");
         String eventCity = new Scanner(System.in).next();
 
+        if (!eventManager.isValidEvent(eventName, eventDate, eventCity)) {
+            return MenuUtils.showError("Not a valid event", 2);
+        }
+
         System.out.print("\n");
         System.out.print("Zones of the event");
         System.out.print("\n");
-        if (eventManager.getEvent(eventName, eventDate, eventCity) == null) {
-            MenuUtils.cleanConsole();
-            System.out.println("Not a valid event");
-            MenuUtils.waitSeconds(2);
-            return false;
-        }
         int numberOfZones = eventManager.getEvent(eventName, eventDate, eventCity).getArea().getZones().size();
         for (int i = 1; i <= numberOfZones; ++i) {
             System.out.println(i + ".  " + eventManager.getEvent(eventName, eventDate, eventCity).getArea().getZone(i-1));
@@ -312,22 +307,14 @@ public class Menu {
         int eventZone = MenuUtils.getIntInput();
 
         if (eventZone > 0 && eventZone <= numberOfZones) {
-            ticketMaganer.buyTicket(eventManager.getEvent(eventName, eventDate, eventCity),
-                    eventManager.getEvent(eventName, eventDate, eventCity).getArea().getZone(eventZone),
-                    token);
-            System.out.println("Transaction OK");
-            MenuUtils.cleanConsole();
-            MenuUtils.waitSeconds(2);
-            return true;
+            Event event = eventManager.getEvent(eventName, eventDate, eventCity);
+            Zone zone = event.getArea().getZone(eventZone);
+            ticketMaganer.buyTicket(event, zone, token);
+            return MenuUtils.showConfirmation("Transaction OK", 2);
         } else {
-            MenuUtils.cleanConsole();
-            System.out.println("Nota valid zone");
-            MenuUtils.waitSeconds(2);
-            MenuUtils.cleanConsole();
-            return false;
+            return MenuUtils.showError("Invalid zone", 2);
         }
     }
-
 
     private void seeTickets(String token) {
         System.out.println(ticketMaganer.getTickets(token));
@@ -379,12 +366,7 @@ public class Menu {
         System.out.print("\n");
         System.out.print("Zones of the event");
         System.out.print("\n");
-        if (eventManager.getEvent(eventName, eventDate, eventCity) == null) {
-            MenuUtils.cleanConsole();
-            System.out.println("Not a valid event");
-            MenuUtils.waitSeconds(2);
-            return false;
-        }
+        if (eventManager.isValidEvent(eventName, eventDate, eventCity)) return false;
         int numberOfZones = eventManager.getEvent(eventName, eventDate, eventCity).getArea().getZones().size();
         for (int i = 1; i <= numberOfZones; ++i) {
             System.out.println(i + ".  " + eventManager.getEvent(eventName, eventDate, eventCity).getArea().getZone(i-1));
@@ -417,11 +399,7 @@ public class Menu {
             MenuUtils.cleanConsole();
             return true;
         } else {
-            MenuUtils.cleanConsole();
-            System.out.println("Nota valid zone");
-            MenuUtils.waitSeconds(2);
-            MenuUtils.cleanConsole();
-            return false;
+            return MenuUtils.showError("Not a valid zone", 2);
         }
     }
 
@@ -450,36 +428,33 @@ public class Menu {
 
         System.out.print("\n");
         System.out.print("Enter the Area of the event: (-1 to cancel): ");
-        String eventArea = selectArea();
+        Area eventArea = selectArea();
 
         MenuUtils.cleanConsole();
 
         if (eventType != null && eventName != null) {
-            System.out.println(eventManager.createEvent(eventName, eventType, eventStartDate,
-                    eventFinishDate, eventManager.getArea(eventCity), token));
-            MenuUtils.waitSeconds(5);
+            Event event = new Event(eventName, eventType, eventStartDate, eventFinishDate, eventArea);
+            eventManager.createEvent(event, token);
+            MenuUtils.showConfirmation("Transaction OK", 2);
         } else {
-            System.out.println("Wrong data");
-            MenuUtils.waitSeconds(2);
+            MenuUtils.showError("Error", 2);
         }
-
-        MenuUtils.cleanConsole();
     }
 
-    private String selectArea() {
+    private Area selectArea() {
         System.out.println("EVENT AREA SELECTION");
 
-        for (int i = 0; i <= eventManager.getAreas().size(); ++i) {
-            System.out.println("Area:  " + eventManager.getArea(i));
+        for (int i = 0; i < eventManager.getAreas().size(); ++i) {
+            System.out.println("Area " + i + ":  " + eventManager.getArea(i));
         }
         System.out.print("\n");
         System.out.print("Enter the area: ");
-        String area = new Scanner(System.in).next();
+        int area = MenuUtils.getIntInput();
 
-        if (area != null) {
-            return area;
+        if (area > 0 && area < eventManager.getAreas().size()) {
+            return eventManager.getArea(area);
         } else {
-            System.out.println("Area not found");
+            System.out.println("Invalid option");
             return null;
         }
     }
