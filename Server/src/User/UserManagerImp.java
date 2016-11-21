@@ -9,22 +9,22 @@ import java.util.UUID;
  */
 public class UserManagerImp implements UserManager {
 
-    private static HashMap<UserImp, String> tokens;
+    private static HashMap<User, String> tokens;
 
     public UserManagerImp() {
         tokens = new HashMap<>();
-        UserImp testUserImp1 = new UserImp();
-        tokens.put(testUserImp1,
-                UUID.nameUUIDFromBytes((testUserImp1.getUsername() + testUserImp1.getPassword()).getBytes()).toString());
+        User testUser1 = new User();
+        tokens.put(testUser1,
+                UUID.nameUUIDFromBytes((testUser1.getUsername() + testUser1.getPassword()).getBytes()).toString());
     }
 
     public void saveUser(String username, String password) {
-        UserImp userImp = new UserImp(username, password);
-        tokens.put(userImp, UUID.nameUUIDFromBytes((username + password).getBytes()).toString());
+        User user = new User(username, password);
+        tokens.put(user, UUID.nameUUIDFromBytes((username + password).getBytes()).toString());
     }
 
     public String getToken(String username, String password) {
-        UserImp pepe = new UserImp(username, password);
+        User pepe = new User(username, password);
         return tokens.get(pepe);
     }
 
@@ -33,11 +33,11 @@ public class UserManagerImp implements UserManager {
         return tokens.containsValue(token);
     }
 
-    public UserImp getUser(String token) {
-        for (Map.Entry<UserImp, String> entry : tokens.entrySet()) {
-            UserImp userImp = entry.getKey();
+    public User getUser(String token) {
+        for (Map.Entry<User, String> entry : tokens.entrySet()) {
+            User user = entry.getKey();
             if (entry.getValue().equals(token))
-                return userImp;
+                return user;
         }
         return null;
     }
