@@ -1,11 +1,11 @@
 package TestClient;
 
-import Event.EventManager;
-import Event.Event;
-import Zone.Zone;
 import Area.Area;
+import Event.Event;
+import Event.EventManager;
 import Ticket.TicketManager;
 import User.UserManager;
+import Zone.*;
 import org.joda.time.LocalDate;
 import org.springframework.context.support.AbstractApplicationContext;
 
@@ -25,9 +25,9 @@ public class Menu {
     public Menu(AbstractApplicationContext context) {
         this.context = context;
 
-        this.userManager = (UserManager) context.getBean("userManagerImp");
-        this.eventManager = (EventManager) context.getBean("eventManagerImp");
-        this.ticketMaganer = (TicketManager) context.getBean("ticketManagerImp");
+        this.userManager = (UserManager) context.getBean("userManager");
+        this.eventManager = (EventManager) context.getBean("eventManager");
+        this.ticketMaganer = (TicketManager) context.getBean("ticketManager");
 
         userManager.saveUser("admin", "admin");
     }
@@ -140,6 +140,7 @@ public class Menu {
             System.out.println("2.  Search by name & city");
             System.out.println("3.  Search by date & type");
             System.out.println("4.  Search by date & type & city");
+            System.out.println("5.  See all");
             System.out.print("\n");
             System.out.print("Select an option (-1 to user menu): ");
             int option = MenuUtils.getIntInput();
@@ -158,6 +159,9 @@ public class Menu {
                     break;
                 case 4:
                     searchEventByDateAndTypeAndCity();
+                    break;
+                case 5:
+                    seeAllEvents();
                     break;
                 default:
                     userMenu(token);
@@ -268,6 +272,19 @@ public class Menu {
         MenuUtils.cleanConsole();
 
         System.out.println(eventManager.getEvents(eventName));
+        MenuUtils.waitSeconds(5);
+
+        MenuUtils.cleanConsole();
+    }
+
+
+    private void seeAllEvents() {
+        System.out.println("SEE ALL EVENTS");
+        System.out.print("\n");
+
+        MenuUtils.cleanConsole();
+
+        System.out.println(eventManager.getEvents());
         MenuUtils.waitSeconds(5);
 
         MenuUtils.cleanConsole();

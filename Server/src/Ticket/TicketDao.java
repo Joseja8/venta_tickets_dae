@@ -1,4 +1,4 @@
-package Zone;
+package Ticket;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,19 +11,17 @@ import javax.persistence.PersistenceContext;
  */
 @Repository
 @Transactional
-public class ZoneDao {
+public class TicketDao {
 
     @PersistenceContext
-    EntityManager entityManager;
+    EntityManager em;
 
-    @Transactional
-    public Zone find(int id) {
-        return entityManager.find(Zone.class, id);
+    public Ticket find(int id) {
+        return em.find(Ticket.class, id);
     }
 
-    @Transactional
-    public void insert(Zone zone) {
-        entityManager.persist(zone);
-        entityManager.flush();
+    public void insert(Ticket ticket) {
+        em.persist(ticket);
+        em.flush();
     }
 }

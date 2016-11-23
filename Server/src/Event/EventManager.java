@@ -4,7 +4,7 @@ import Area.Area;
 import Zone.Zone;
 import org.joda.time.LocalDate;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by joseja on 10/21/16.
@@ -20,16 +20,16 @@ public interface EventManager {
     EventTypes[] getEventTypes();
 
     Event getEvent(String name, LocalDate date, String city);
-    ArrayList<Event> getEvents();
-    ArrayList<Event> getEvents(String name);
-    ArrayList<Event> getEvents(String name, String city);
-    ArrayList<Event> getEvents(LocalDate date, EventTypes type);
-    ArrayList<Event> getEvents(LocalDate date, EventTypes type, String city);
+    List<Event> getEvents();
+    List<Event> getEvents(String name);
+    List<Event> getEvents(String name, String city);
+    List<Event> getEvents(LocalDate date, EventTypes type);
+    List<Event> getEvents(LocalDate date, EventTypes type, String city);
     boolean isValidEvent(String name, LocalDate date, String city);
 
     Area getArea(String name);
     Area getArea(int index);
-    ArrayList<Area> getAreas();
+    List<Area> getAreas();
 
     boolean setPrice(Event event, Zone zone, float price, String token);
 

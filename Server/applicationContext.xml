@@ -1,23 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
- http://www.springframework.org/schema/beans/spring-beans.xsd">
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
+    <!-- Beans -->
     <bean id="ticket" class="Ticket.Ticket">
-        <property name="priceTable" ref="priceTableImp"/>
-    </bean>
-    <bean id="zone" class="Zone.Zone"></bean>
-
-    <bean id="priceTable" class="PriceTable.PriceTableImp"></bean>
-    <bean id="eventManagerImp" class="Event.EventManagerImp">
-        <property name="userManager" ref="userManagerImp"/>
         <property name="priceTable" ref="priceTable"/>
     </bean>
-    <bean id="ticketManagerImp" class="Ticket.TicketManagerImp">
-        <property name="userManager" ref="userManagerImp"/>
+    <bean id="priceTable" class="PriceTable.PriceTableImp"></bean>
+
+
+    <!-- DAO's -->
+    <bean id="eventDao" class="Event.EventDao"></bean>
+    <bean id="areaDao" class="Area.AreaDao"></bean>
+    <bean id="ticketDao" class="Ticket.TicketDao"></bean>
+    <bean id="userDao" class="User.UserDao"></bean>
+    <bean id="zoneDao" class="Zone.ZoneDao"></bean>
+
+
+    <!-- Interfaces -->
+    <bean id="eventManager" class="Event.EventManagerImp">
+        <property name="userManager" ref="userManager"/>
+        <property name="priceTable" ref="priceTable"/>
+        <property name="eventDao" ref="eventDao"/>
     </bean>
-    <bean id="userManagerImp" class="User.UserManagerImp"></bean>
-    <bean id="priceTableImp" class="PriceTable.PriceTableImp"></bean>
-    <bean id="DBConnection" class="Database.DBConnection" destroy-method="disconnect"></bean>
+    <bean id="ticketManager" class="Ticket.TicketManagerImp">
+        <property name="userManager" ref="userManager"/>
+    </bean>
+    <bean id="userManager" class="User.UserManagerImp"></bean>
+
+
+    <!-- Persistence -->
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/test" />
+        <property name="username" value="root" />
+        <property name="password" value="root" />
+    </bean>
+
+    <bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="database" value="MYSQL" />
+        <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
+        <property name="showSql" value="false" />
+        <property name="generateDdl" value="true" />
+    </bean>
+
+    <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="packagesToScan" value="Area, Database, Event, PriceTable, Ticket, User, Zone"/>
+        <property name="dataSource" ref="dataSource" />
+        <property name="jpaVendorAdapter" ref="jpaAdapter" />
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="emf" />
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <bean class= "org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+    <bean class= "org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 </beans>

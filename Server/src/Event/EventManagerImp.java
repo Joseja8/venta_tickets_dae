@@ -8,6 +8,7 @@ import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by joseja on 10/21/16.
@@ -17,6 +18,8 @@ public class EventManagerImp implements EventManager {
     private UserManager userManager;
 
     private PriceTable.PriceTableImp priceTable;
+
+    private EventDao eventDao;
 
     private ArrayList<Event> events;
     private ArrayList<Area> areas;
@@ -39,59 +42,33 @@ public class EventManagerImp implements EventManager {
     }
 
     @Override
-    public ArrayList<Event> getEvents() {
-        return events;
+    public List<Event> getEvents() {
+        return eventDao.findAll();
     }
 
     @Override
-    public ArrayList<Event> getEvents(String name) {
-        ArrayList<Event> results = new ArrayList<>();
-        for (Event event : events)
-            if (event.getName().equals(name))
-                results.add(event);
-        return results;
+    public List<Event> getEvents(String name) {
+        return eventDao.findByName(name);
     }
 
     @Override
-    public ArrayList<Event> getEvents(String name, String city) {
-        ArrayList<Event> results = new ArrayList<>();
-        for (Event event : events)
-            if (event.getName().equals(name) && event.getArea().getName().equals(city))
-                results.add(event);
-        return results;
+    public List<Event> getEvents(String name, String city) {
+        return eventDao.findByNameAndCity(name, city);
     }
 
     @Override
-    public ArrayList<Event> getEvents(LocalDate date, EventTypes type) {
-        ArrayList<Event> results = new ArrayList<>();
-        for (Event event : events)
-            if (event.getEventType().equals(type) && date.isBefore(event.getFinishDate()) && date.isAfter(event.getStartDate()))
-                results.add(event);
-        return results;
+    public List<Event> getEvents(LocalDate date, EventTypes type) {
+        return eventDao.findByDateAndType(date, type);
     }
 
     @Override
-    public ArrayList<Event> getEvents(LocalDate date, EventTypes type, String city) {
-        ArrayList<Event> results = new ArrayList<>();
-        for (Event event : events)
-            if (event.getEventType().equals(type) && date.isBefore(event.getFinishDate()) && date.isAfter(event.getStartDate()) && event.getArea().getName().equals(city))
-                results.add(event);
-        return results;
+    public List<Event> getEvents(LocalDate date, EventTypes type, String city) {
+        return eventDao.findByDateAndTypeAndCity(date, type, city);
     }
 
     @Override
     public Event getEvent(String name, LocalDate date, String city) {
-        Event result = null;
-        for (Event event : events) {
-            boolean sameName = event.getName().equals(name);
-            boolean betweenDate = date.isBefore(event.getFinishDate()) && date.isAfter(event.getStartDate());
-            boolean sameDate = date.equals(event.getStartDate()) || date.equals(event.getFinishDate());
-            boolean sameCity = event.getArea().getName().equals(city);
-            if (sameName && (betweenDate || sameDate) && sameCity) {
-                result = event;
-            }
-        }
-        return result;
+        return eventDao.findbyNameAndDateAndCity(name, date, city);
     }
 
     @Override
@@ -197,5 +174,13 @@ public class EventManagerImp implements EventManager {
 
     public void setPriceTable(PriceTableImp priceTable) {
         this.priceTable = priceTable;
+    }
+
+    public EventDao getEventDao() {
+        return eventDao;
+    }
+
+    public void setEventDao(EventDao eventDao) {
+        this.eventDao = eventDao;
     }
 }
