@@ -25,10 +25,8 @@ public interface EventManager {
     List<Event> getEvents(String name, String city);
     List<Event> getEvents(LocalDate date, EventTypes type);
     List<Event> getEvents(LocalDate date, EventTypes type, String city);
-    boolean isValidEvent(String name, LocalDate date, String city);
 
     Area getArea(String name);
-    Area getArea(int index);
     List<Area> getAreas();
 
     boolean setPrice(Event event, Zone zone, float price, String token);

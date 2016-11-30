@@ -3,8 +3,6 @@ package User;
 import Ticket.Ticket;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,17 +18,20 @@ public class User {
 
     private String username;
     private String password;
+    private String token;
 
     public User() {
-        this.setUsername("jose");
-        this.setPassword("jose");
-        this.setTickets(new ArrayList<>(Arrays.asList(new Ticket(), new Ticket(), new Ticket())));
     }
 
     public User(String username, String password) {
         this.setUsername(username);
         this.setPassword(password);
-        this.setTickets(new ArrayList<Ticket>());
+    }
+
+    public User(String username, String password, String token) {
+        this.setUsername(username);
+        this.setPassword(password);
+        this.setToken(token);
     }
 
     @Id
@@ -44,7 +45,7 @@ public class User {
         this.id = id;
     }
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     @Column(name="tickets")
     public List<Ticket> getTickets() {
         return tickets;
@@ -99,5 +100,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

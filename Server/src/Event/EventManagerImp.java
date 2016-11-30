@@ -1,18 +1,19 @@
 package Event;
 
 import Area.Area;
+import Area.AreaDao;
 import PriceTable.PriceTableImp;
 import User.UserManager;
 import Zone.Zone;
 import org.joda.time.LocalDate;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by joseja on 10/21/16.
  */
+@Transactional
 public class EventManagerImp implements EventManager {
 
     private UserManager userManager;
@@ -20,25 +21,9 @@ public class EventManagerImp implements EventManager {
     private PriceTable.PriceTableImp priceTable;
 
     private EventDao eventDao;
-
-    private ArrayList<Event> events;
-    private ArrayList<Area> areas;
+    private AreaDao areaDao;
 
     public EventManagerImp() {
-        this.events = new ArrayList<>(Arrays.asList(new Event()));
-
-        Zone zone1 = new Zone(Zones.A, 100);
-        Zone zone2 = new Zone(Zones.B, 200);
-        Zone zone3 = new Zone(Zones.C, 300);
-        Zone zone4 = new Zone(Zones.D, 400);
-        Zone zone5 = new Zone(Zones.E, 500);
-
-        Area area1 = new Area("madrid", new ArrayList<>(Arrays.asList(zone1, zone2)));
-        Area area2 = new Area("barcelona", new ArrayList<>(Arrays.asList(zone1, zone2, zone3)));
-        Area area3 = new Area("malaga", new ArrayList<>(Arrays.asList(zone1, zone4)));
-        Area area4 = new Area("sevilla", new ArrayList<>(Arrays.asList(zone2)));
-
-        this.areas = new ArrayList<>(Arrays.asList(area1, area2, area3, area4));
     }
 
     @Override
@@ -72,21 +57,6 @@ public class EventManagerImp implements EventManager {
     }
 
     @Override
-    public boolean isValidEvent(String name, LocalDate date, String city) {
-        boolean isValid = false;
-        for (Event event : events) {
-            boolean sameName = event.getName().equals(name);
-            boolean betweenDate = date.isBefore(event.getFinishDate()) && date.isAfter(event.getStartDate());
-            boolean sameDate = date.equals(event.getStartDate()) || date.equals(event.getFinishDate());
-            boolean sameCity = event.getArea().getName().equals(city);
-            if (sameName && (betweenDate || sameDate) && sameCity) {
-                isValid = true;
-            }
-        }
-        return isValid;
-    }
-
-    @Override
     public boolean setPrice(Event event, Zone zone, float price, String token) {
         if (userManager.isAdmin(token)) {
             priceTable.setPrice(event, zone, price);
@@ -99,7 +69,7 @@ public class EventManagerImp implements EventManager {
     @Override
     public boolean createEvent(Event event, String token) {
         if (userManager.isAdmin(token)) {
-            events.add(event);
+            eventDao.insert(event);
             return true;
         } else {
             return false;
@@ -109,7 +79,7 @@ public class EventManagerImp implements EventManager {
     @Override
     public boolean createArea(Area area, String token) {
         if (userManager.isAdmin(token)) {
-            areas.add(area);
+            areaDao.insert(area);
             return true;
         } else {
             return false;
@@ -127,27 +97,13 @@ public class EventManagerImp implements EventManager {
     }
 
     @Override
-    public ArrayList<Area> getAreas() {
-        return areas;
+    public List<Area> getAreas() {
+        return areaDao.findAll();
     }
 
     @Override
     public Area getArea(String city) {
-        for (Area area : areas) {
-            if (area.getName().equals(area)) {
-                return area;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Area getArea(int index) {
-        if (index >= 0 && index < areas.size()) {
-            return areas.get(index);
-        } else {
-            return null;
-        }
+        return areaDao.findByCity(city);
     }
 
     @Override
@@ -182,5 +138,13 @@ public class EventManagerImp implements EventManager {
 
     public void setEventDao(EventDao eventDao) {
         this.eventDao = eventDao;
+    }
+
+    public AreaDao getAreaDao() {
+        return areaDao;
+    }
+
+    public void setAreaDao(AreaDao areaDao) {
+        this.areaDao = areaDao;
     }
 }

@@ -19,14 +19,14 @@ public class EventDao {
     EntityManager em;
 
     public Event findbyNameAndDateAndCity(String name, LocalDate date, String city) {
-        return (Event) em.createQuery("select event from Event event " +
+        return ((Event)em.createQuery("select event from Event event " +
                 "where event.name = :name " +
                 "and :date between event.startDate and event.finishDate " +
-                "and event.area = :city")
+                "and event.area.name = :city")
                 .setParameter("name", name)
-                .setParameter("date", date)
+                .setParameter("date", date.toString())
                 .setParameter("city", city)
-                .getSingleResult();
+                .getSingleResult());
     }
 
     public List<Event> findAll() {return em.createQuery("select d from Event d").getResultList();}
@@ -37,7 +37,6 @@ public class EventDao {
                 .setParameter("name", name)
                 .getResultList();
     }
-
     public List<Event> findByNameAndCity(String name, String city) {
         return em.createQuery("select event from Event event " +
                 "where event.name = :name " +
@@ -51,7 +50,7 @@ public class EventDao {
         return em.createQuery("select event from Event event " +
                 "where :date between event.startDate and event.finishDate " +
                 "and event.eventType = :type")
-                .setParameter("date", date)
+                .setParameter("date", date.toString())
                 .setParameter("type", type)
                 .getResultList();
     }
@@ -60,7 +59,7 @@ public class EventDao {
         return em.createQuery("select event from Event event " +
                 "where :date between event.startDate and event.finishDate " +
                 "and event.area = :city")
-                .setParameter("date", date)
+                .setParameter("date", date.toString())
                 .setParameter("city", city)
                 .getResultList();
     }
@@ -70,7 +69,7 @@ public class EventDao {
                 "where :date between event.startDate and event.finishDate " +
                 "and event.eventType = :type " +
                 "and event.area = :city")
-                .setParameter("date", date)
+                .setParameter("date", date.toString())
                 .setParameter("type", type)
                 .setParameter("city", city)
                 .getResultList();

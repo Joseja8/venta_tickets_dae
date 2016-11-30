@@ -1,7 +1,5 @@
 package User;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -9,44 +7,40 @@ import java.util.UUID;
  */
 public class UserManagerImp implements UserManager {
 
-    private static HashMap<User, String> tokens;
+    private UserDao userDao;
 
     public UserManagerImp() {
-        tokens = new HashMap<>();
-        User testUser1 = new User();
-        tokens.put(testUser1,
-                UUID.nameUUIDFromBytes((testUser1.getUsername() + testUser1.getPassword()).getBytes()).toString());
     }
 
     public void saveUser(String username, String password) {
         User user = new User(username, password);
-        tokens.put(user, UUID.nameUUIDFromBytes((username + password).getBytes()).toString());
+        String token = UUID.nameUUIDFromBytes((username + password).getBytes()).toString();
+        user.setToken(token);
+        userDao.insert(user);
     }
 
     public String getToken(String username, String password) {
-        User pepe = new User(username, password);
-        return tokens.get(pepe);
+        return userDao.findByName(username).getToken();
     }
 
     @Override
     public boolean isUser(String token) {
-        return tokens.containsValue(token);
+        return userDao.tokenExists(token);
     }
 
     public User getUser(String token) {
-        for (Map.Entry<User, String> entry : tokens.entrySet()) {
-            User user = entry.getKey();
-            if (entry.getValue().equals(token))
-                return user;
-        }
-        return null;
+        return userDao.findByToken(token);
     }
 
     public boolean isAdmin(String token) {
-        if (token.equals(UUID.nameUUIDFromBytes(("adminadmin").getBytes()).toString())) {
-            return true;
-        } else {
-            return false;
-        }
+        return userDao.isAdmin(token);
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }

@@ -1,6 +1,5 @@
 package Zone;
 
-import Event.EventManager;
 import Event.EventManagerImp;
 
 import javax.persistence.*;
@@ -19,10 +18,6 @@ public class Zone {
     private float price;
 
     public Zone() {
-        this.setType(EventManager.Zones.A);
-        this.setSeats(100);
-        this.setRemainingSeats(100);
-        this.setPrice(0);
     }
 
     public Zone(EventManagerImp.Zones zone, int seats) {

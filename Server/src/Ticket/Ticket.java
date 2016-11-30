@@ -23,16 +23,12 @@ public class Ticket {
     private float price;
 
     public Ticket() {
-        this.setId(-1);
-        this.setEvent(new Event());
-        this.setZone(new Zone());
     }
 
     public Ticket(Event event, Zone zone) {
-        this.id = -1;
         this.setEvent(event);
         this.setZone(zone);
-        this.setPrice(getPriceTable().getPrice(event, zone));
+        //this.setPrice(getPriceTable().getPrice(event, zone));
     }
 
     @Id

@@ -20,13 +20,11 @@ public class Area {
     private String name;
 
     public Area() {
-        this.setName("alicante");
-        this.setZones(new ArrayList<>(Arrays.asList(new Zone(), new Zone(), new Zone())));
     }
 
-    public Area(String name, ArrayList<Zone> zones) {
-        this.setName(name);
-        this.setZones(zones);
+    public Area(String name, List<Zone> zones) {
+        this.name = name;
+        this.zones = zones;
     }
 
     @Id
@@ -36,11 +34,11 @@ public class Area {
         return id;
     }
 
-    protected void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    @OneToMany
+    @ManyToMany
     @Column(name="zones")
     public List<Zone> getZones() {
         return zones;
@@ -63,6 +61,6 @@ public class Area {
     }
 
     public String toString() {
-        return "Name: " + name + ", Zones: " + zones;
+        return "Name: " + name;
     }
 }

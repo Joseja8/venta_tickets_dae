@@ -1,7 +1,6 @@
 package Event;
 
 import Area.Area;
-import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -17,24 +16,19 @@ public class Event {
 
     private String name;
     private EventManager.EventTypes eventType;
-    private LocalDate startDate;
-    private LocalDate finishDate;
+    private String startDate;
+    private String finishDate;
 
 
     public Event() {
-        this.setName("leyendas");
-        this.setEventType(EventManager.EventTypes.Festival);
-        this.setStartDate(LocalDate.parse("22222222"));
-        this.setFinishDate(LocalDate.parse("22222222"));
-        this.setArea(new Area());
     }
 
-    public Event(String name, EventManager.EventTypes eventType, LocalDate start, LocalDate finish, Area area) {
-        this.setName(name);
-        this.setEventType(eventType);
-        this.setStartDate(start);
-        this.setFinishDate(finish);
-        this.setArea(area);
+    public Event(String name, EventManager.EventTypes eventType, String start, String finish, Area area) {
+        this.name = name;
+        this.eventType = eventType;
+        this.startDate = start;
+        this.finishDate = finish;
+        this.area = area;
     }
 
     @Id
@@ -56,15 +50,15 @@ public class Event {
         return eventType;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public LocalDate getFinishDate() {
+    public String getFinishDate() {
         return finishDate;
     }
 
-    @OneToOne
+    @ManyToOne
     public Area getArea() {
         return area;
     }
@@ -94,11 +88,11 @@ public class Event {
         this.name = name;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public void setFinishDate(LocalDate finishDate) {
+    public void setFinishDate(String finishDate) {
         this.finishDate = finishDate;
     }
 
